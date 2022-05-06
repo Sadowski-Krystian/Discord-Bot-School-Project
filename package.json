@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "axios": "^0.27.2",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "mongoose": "^6.3.1",
+    "node-html-to-image": "^3.2.4",
+    "puppeteer": "^13.7.0",
+    "request": "^2.88.2",
+    "svg-png-converter": "^0.0.9"
+  }
+}

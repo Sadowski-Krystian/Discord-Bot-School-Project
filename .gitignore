@@ -1,1 +1,4 @@
+# Node
+node_modules/
 .env
+tmp/
