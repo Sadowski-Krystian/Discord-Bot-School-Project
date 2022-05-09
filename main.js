@@ -17,10 +17,10 @@ client.fun = require("./src/functions.js")
 require('./src/loader');
 const loadPrefixes = require('./events/ready.js')
 loadPrefixes.loadPrefixes(client)
-// client.plans = require('./src/getPlans.js')
+client.plans = require('./src/getPlans.js')
 
 const tmp = require('./src/getJSON.js')
-tmp.myJSON()
-// tmp.cachePlans()
+// tmp.myJSON()
+// client.plans.myPlans(client)
 
 client.login(client.config.app.token);
