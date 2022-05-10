@@ -53,7 +53,7 @@ module.exports = {
             time: 10000
         });
         collector.on('collect', interaction => {
-            // interaction.deferUpdate() ???
+            // interaction.deferUpdate() 
             if(interaction.customId  == 'mextClassroom'){
                 start  = start + 10
                 end = end +10
