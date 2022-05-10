@@ -4,6 +4,7 @@ const mongo = require("../src/mongo");
 const axios = require('axios');
 const classroomsSchema = require('../schemas/classrooms-schema.js');
 const periodsSchema = require('../schemas/periods-schema.js');
+const teachersSchema = require('../schemas/teachers-schema.js');
 // const myschemas = {'classrooms': classroomsSchema}
 module.exports = {
 
@@ -17,13 +18,16 @@ module.exports = {
         if(res.r.dbiAccessorRes.tables[i].id == 'classrooms'){
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows.length);
           // console.log(res.r.dbiAccessorRes.tables);
-          await module.exports.adddataClasses(res.r.dbiAccessorRes.tables[i])
+          // await module.exports.adddataClasses(res.r.dbiAccessorRes.tables[i])
         }else if(res.r.dbiAccessorRes.tables[i].id == 'periods'){
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows);
-          await module.exports.adddataPeriods(res.r.dbiAccessorRes.tables[i])
+          // await module.exports.adddataPeriods(res.r.dbiAccessorRes.tables[i])
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows[0].starttime)
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows[0].starttime.replace(':', ""));
           // console.log(parseInt(res.r.dbiAccessorRes.tables[i].data_rows[0].starttime.replace(':', "")));
+        }else if(res.r.dbiAccessorRes.tables[i].id == 'teachers'){
+          console.log('nauczyciele');
+          await module.exports.adddataTeachers(res.r.dbiAccessorRes.tables[i])
         }
       }
 
@@ -37,7 +41,7 @@ module.exports = {
               for(let x = 0; x<res.data_rows.length; x++){
                 await client.fun.sleep(10000)
                 // console.log(res.data_rows[x]);
-                console.log('dodano', x);
+                console.log('dodano classes', x);
                 await classroomsSchema.findOneAndUpdate({
                     _id: res.data_rows[x].id
                 },{
@@ -66,7 +70,7 @@ module.exports = {
               for(let x = 0; x<res.data_rows.length; x++){
                 await client.fun.sleep(10000)
                 // console.log(res.data_rows[x]);
-                console.log('dodano', x);
+                console.log('dodano periods', x);
                 await periodsSchema.findOneAndUpdate({
                     _id: res.data_rows[x].id
                 },{
@@ -86,5 +90,33 @@ module.exports = {
             }
           })
         
-      }
+      },
+      async adddataTeachers (res){
+        
+        await mongo().then(async mongoose =>{
+          try{
+            for(let x = 0; x<res.data_rows.length; x++){
+              await client.fun.sleep(10000)
+              // console.log(res.data_rows[x]);
+              console.log('dodano teachers', x);
+              await teachersSchema.findOneAndUpdate({
+                  _id: res.data_rows[x].id
+              },{
+                  _id: res.data_rows[x].id,
+                  short: res.data_rows[x].short,
+                  gender: res.data_rows[x].gender,
+                  bell: res.data_rows[x].bell,
+                  color: res.data_rows[x].color,
+              },{
+                  upsert: true
+              })
+            }
+              
+          }finally{
+              mongoose.connection.close()
+          }
+        })
+      
+    }, 
+
 }
