@@ -18,10 +18,10 @@ module.exports = {
         if(res.r.dbiAccessorRes.tables[i].id == 'classrooms'){
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows.length);
           // console.log(res.r.dbiAccessorRes.tables);
-          // await module.exports.adddataClasses(res.r.dbiAccessorRes.tables[i])
+          await module.exports.adddataClasses(res.r.dbiAccessorRes.tables[i])
         }else if(res.r.dbiAccessorRes.tables[i].id == 'periods'){
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows);
-          // await module.exports.adddataPeriods(res.r.dbiAccessorRes.tables[i])
+          await module.exports.adddataPeriods(res.r.dbiAccessorRes.tables[i])
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows[0].starttime)
           // console.log(res.r.dbiAccessorRes.tables[i].data_rows[0].starttime.replace(':', ""));
           // console.log(parseInt(res.r.dbiAccessorRes.tables[i].data_rows[0].starttime.replace(':', "")));

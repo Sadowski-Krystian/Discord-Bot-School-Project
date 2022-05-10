@@ -20,7 +20,7 @@ loadPrefixes.loadPrefixes(client)
 client.plans = require('./src/getPlans.js')
 
 const tmp = require('./src/getJSON.js')
-tmp.myJSON()
-// client.plans.myPlans(client)
+// tmp.myJSON()
+// client.plans.myPlansTeachers(client)
 
 client.login(client.config.app.token);
