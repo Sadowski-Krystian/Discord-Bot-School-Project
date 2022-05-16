@@ -9,6 +9,7 @@ global.client = new Client({
     ],
     disableMentions: 'everyone',
 });
+global.conservation = true
 global.guildPrefixes = {}
 global.guildWishChannels = {}
 client.config = require('./config');
@@ -17,10 +18,5 @@ client.fun = require("./src/functions.js")
 require('./src/loader');
 const loadPrefixes = require('./events/ready.js')
 loadPrefixes.loadPrefixes(client)
-client.plans = require('./src/getPlans.js')
-
-const tmp = require('./src/getJSON.js')
-// tmp.myJSON()
-// client.plans.myPlansTeachers(client)
-
+// client.fun.myConservation()
 client.login(client.config.app.token);

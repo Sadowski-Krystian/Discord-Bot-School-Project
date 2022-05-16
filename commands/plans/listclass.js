@@ -12,59 +12,132 @@ module.exports = {
     cooldown: 5,
     minArgs: 0,
 
-    execute: async (client, message, args) =>{
-        let start = 0
-        let end = 10
+    execute: async (client, message, args) => {
+        message.start = 0
         const nextButton = new MessageButton();
         const previosButton = new MessageButton();
+        const minButton = new MessageButton();
+        const maxButton = new MessageButton();
         // console.log(message);
         nextButton.setLabel('▶️');
         nextButton.setStyle('SECONDARY')
-        nextButton.setCustomId('mextClassroom'+message.createdTimestamp);
+        nextButton.setCustomId('mextClassroom');
         previosButton.setStyle('SECONDARY')
         previosButton.setLabel('◀️');
-        previosButton.setCustomId('previosClassroom'+message.createdTimestamp);
-        const row = new MessageActionRow().addComponents(previosButton, nextButton);
-        const filter = (interaction) =>{
-            if(interaction.user.id == message.author.id){
+        previosButton.setCustomId('previosClassroom');
+        minButton.setStyle('SECONDARY')
+        minButton.setLabel('⏮️');
+        minButton.setCustomId('minClassroom');
+        maxButton.setStyle('SECONDARY')
+        maxButton.setLabel('⏭️');
+        maxButton.setCustomId('maxClassroom');
+        const row = new MessageActionRow().addComponents(minButton,previosButton, nextButton,maxButton);
+        const filter = (interaction) => {
+            if (interaction.user.id == message.author.id) {
                 return true
             }
         }
-        
-                     
+
+
         let saletable = []
-        await mongo().then(async mongoose =>{
-            try{
-                
+        await mongo().then(async mongoose => {
+            try {
+
                 const result = await classroomsSchema.find()
-                for(let i = 0; i<result.length; i++){
-                    
+                for (let i = 0; i < result.length; i++) {
+
                     saletable.push(result[i])
-                    
+
                 }
-                
-                
-            }finally{
+
+
+            } finally {
                 mongoose.connection.close()
             }
         })
-            
+        if(saletable.length>10){
+            message.end = 10
+        }else{
+            message.end = saletable.length
+        }
+        const embed = new MessageEmbed();
+        embed.setTitle('Lista wszystkich sal w ZSE')
+        embed.setColor('#E67E22');
+
+        let content = module.exports.getdata(message.start, message.end, saletable)
+        // console.log(content);
+        embed.setDescription(content);
+        embed.setFooter({ text: `Showing ${message.end} of ${saletable.length}` });
+        let msg = await message.channel.send({ embeds: [embed], components: [row] })
         // console.log(saletable);
-        module.exports.getdata(start, end, message, row, null, saletable) 
+        // let msg = module.exports.getdata(start, end, message, row, null, saletable) 
         // const collector = message.channel.createMessageComponentCollector({
-            // https://stackoverflow.com/questions/71098387/error-when-more-than-one-fight-in-same-channel
-            // const reply = await message.fetchReply();
-            const collector = await message.createMessageComponentCollector({ 
+        // https://stackoverflow.com/questions/71098387/error-when-more-than-one-fight-in-same-channel
+        // const reply = await message.fetchReply();
+        // console.log(msg);
+        const collector = await msg.createMessageComponentCollector({
             filter,
-            time: 10000
+            time: 20000
         });
-        let i = 0
         collector.on('collect', async interaction => {
-            collector.resetTimer()
-            i++
+            const embedrepley = new MessageEmbed();
+            embedrepley.setTitle('Lista wszystkich sal w ZSE')
+            embedrepley.setColor('#E67E22');
+    
+            
+            
             await interaction.deferUpdate();
-            await wait(4000);
-            await interaction.editReply({ content: `cos2 ${i}`, components: [row] });
+            switch (interaction.customId) {
+                case 'mextClassroom': {
+                    message.start = message.start + 10
+                    message.end = message.end + 10
+                            if(message.end>saletable.length){
+                                message.end = saletable.length
+                                message.start  = saletable.length - 10
+                                if(message.start<0){
+                                    message.start = 0
+                                }
+                                
+                            }
+                    break;
+                }
+                case 'previosClassroom': {
+                    message.start = message.start - 10
+                    message.end = message.end - 10
+                    if (message.start < 0) {
+                        message.start = 0
+                        message.end = 10
+                        if(message.end>saletable.length){
+                            message.end = saletable.length
+                        }
+                        
+                    }
+                    break;
+                }
+                case 'minClassroom':{
+                    message.start = 0
+                    message.end = 10
+                    if(message.end>saletable.length){
+                        message.end = saletable.length
+                    }
+                    break;
+                }
+                case 'maxClassroom':{
+                    message.end = saletable.length
+                    message.start  = saletable.length - 10
+                    if(message.start<0){
+                        message.start = 0
+                    }
+                    break;
+                }
+            }
+            let contentreplay = module.exports.getdata(message.start, message.end, saletable)
+            // console.log(content);
+            embedrepley.setDescription(contentreplay);
+            embedrepley.setFooter({ text: `Showing ${message.end} of ${saletable.length}` });
+            await interaction.editReply({ embeds: [embedrepley], components: [row] });
+            collector.resetTimer()
+            
             // await interaction.update({ content: `cos2 ${i}`, components: [row] })
             // // interaction.deferUpdate() 
             // if(interaction.customId  == 'mextClassroom'){
@@ -79,48 +152,40 @@ module.exports = {
             //         module.exports.getdata(start, end, message, row, interaction.message, saletable)
             //         collector.resetTimer()
             //     }
-                
-                
-                
+
+
+
             // }else if(interaction.customId  == 'previosClassroom'){
             //     start  = start - 10
             //     end = end -10
             //     if(start>=0){
             //         module.exports.getdata(start, end, message, row, interaction.message, saletable) 
             //         collector.resetTimer()
-                    
+
             //     }else{
             //         start = 0
             //         end = 10
             //         module.exports.getdata(start, end, message, row, interaction.message, saletable)
             //         collector.resetTimer()
             //     }
-                 
+
             // }
             // // interaction.reply('Clicked!')
-            
-          })
-          collector.on('end', collected => {
+
+        })
+        collector.on('end', collected => {
             console.log(`Collected ${collected.size} clicks`)
-          })
-        
+        })
+
     },
 
-    getdata: async (start, end, message, row, edit, tablica)=>{
-        const embed = new MessageEmbed();
-                embed.setTitle('Lista wszystkich sal w ZSE')
-                embed.setColor('#E67E22');
-                str = ''
-        for(let x = start; x<end; x++){
-            str = str+(x+1)+". `"+tablica[x].name+"`\n"
+    getdata: (start, end, tablica) => {
+        let str = ''
+        for (let x = start; x < end; x++) {
+            str = str + (x + 1) + ". `" + tablica[x].name + "`\n"
         }
-        embed.setDescription(str);
-                embed.setFooter({ text: `Showing ${end} of ${tablica.length}` });
-                if(edit == null){
-                    message.channel.send({ content: "cos", components: [row] });
-                }else{
-                    edit.edit({ embeds: [embed], components: [row] })
-                }
-                // msg.edit({ embeds: [embed], components: [row] })
+        return str
+
+        // msg.edit({ embeds: [embed], components: [row] })
     }
 };

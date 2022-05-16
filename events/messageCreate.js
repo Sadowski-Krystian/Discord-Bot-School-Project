@@ -2,14 +2,19 @@ const Discord = require("discord.js");
 
 const cooldowns = {}
 module.exports = (client, message) => {
+    
     if (message.channel.type === 'dm') return;
     if (message.author.bot){
+        if(conservation){
+        
+            return
+        }
         if(message.attachments.size > 0 && message.channel.id == guildWishChannels[message.guild.id]){
             client.fun.readspace(message)
         }
         return;
     }
-
+    
     
     let gp
     try{
@@ -44,6 +49,10 @@ module.exports = (client, message) => {
 
 
     if (cmd){
+        if(conservation){
+        
+            return message.channel.send({content:"Chwilowo wyłączyliśmy wszystkie komendy ponieważ przeprowadzamy konserwacje 🤖"})
+        }
         const current_time = Date.now()
         const cooldown_amount = (cmd.cooldown) * 1000
         const cooldown_left = current_time + cooldown_amount

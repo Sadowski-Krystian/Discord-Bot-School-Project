@@ -12,8 +12,7 @@ module.exports = {
           await mongo().then(async mongoose =>{
             try{
           for (let index = 17; index < 79; index++) {
-            classnr = index.toString()
-            await client.fun.sleep(30000)
+            let classnr = index.toString()
             await page.goto('https://zsel.edupage.org/timetable/view.php?num=21&class=-'+classnr, { waitUntil: 'networkidle0' });
             const data = await page.evaluate(() => document.querySelector('svg').outerHTML);
             let parser = new DOMParser();
@@ -55,24 +54,27 @@ module.exports = {
           await mongo().then(async mongoose =>{
             try{
           for (let index = 0; index < 90; index++) {
-            classnr = index.toString()
-            await client.fun.sleep(30000)
+            let classnr = index.toString()
+            // await client.fun.sleep(30000)
             await page.goto('https://zsel.edupage.org/timetable/view.php?num=22&teacher=-'+classnr, { waitUntil: 'networkidle0' });
             const data = await page.evaluate(() => document.querySelector('svg').outerHTML);
             let parser = new DOMParser();
             let doc = parser.parseFromString(data, "text/xml");
             let paragraphs = doc.getElementsByTagName('text')[0].childNodes[0].nodeValue.toLocaleLowerCase()
-            console.log(paragraphs + " "+index);
+            if(paragraphs != '1ta'){
+              console.log(paragraphs + " "+index);
             
-                  await cachedTeachersPlansSchema.findOneAndUpdate({
-                      _id: paragraphs
-                  },{
-                      _id: paragraphs,
-                      plan: data
-                  },{
-                      upsert: true
-                  })
-                  
+              await cachedTeachersPlansSchema.findOneAndUpdate({
+                  _id: paragraphs
+              },{
+                  _id: paragraphs,
+                  plan: data
+              },{
+                  upsert: true
+              })
+              
+            }
+            
                 }
               }finally{
                   mongoose.connection.close()
