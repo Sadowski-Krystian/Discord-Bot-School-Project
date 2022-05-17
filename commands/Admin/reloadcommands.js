@@ -15,9 +15,11 @@ module.exports = {
         embed.setTitle('Komendy zostały załadowane ponownie')
         embed.setColor('GREEN');
         // conservation = true
-        // delete client.commands
+        // client.commands.clear()
+        // console.log(client.commands);
         // delete require.cache[require.resolve(`../../src/loader.js`)];
         // require('../../src/loader.js')
+        // console.log(client.commands);
         // conservation = false
         // console.log(content);
         // embed.setDescription('Aktywacja importu spowoduje tymczasowe wyłączenie wszystkich komend na czas trwania importu. Może to potrwać do kilku minut\n\nCzy chcesz kontynuować?');

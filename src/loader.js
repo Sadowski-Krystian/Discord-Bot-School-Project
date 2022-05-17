@@ -1,7 +1,7 @@
 const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
 
-client.commands = new Collection();
+client.commands.clear()
 
 const events = readdirSync('./events/').filter(file => file.endsWith('.js'));
 
@@ -20,9 +20,15 @@ readdirSync('./commands/').forEach(dirs => {
     const commands = readdirSync(`./commands/${dirs}`).filter(files => files.endsWith('.js'));
 
     for (const file of commands) {
-        const command = require(`../commands/${dirs}/${file}`);
+        const command = requireUncached(`../commands/${dirs}/${file}`);
+        console.log(command);
         console.log(`-> Loaded command ${command.name.toLowerCase()}`);
         client.commands.set(command.name.toLowerCase(), command);
-        delete require.cache[require.resolve(`../commands/${dirs}/${file}`)];
+        // delete require.cache[require.resolve(`../commands/${dirs}/${file}`)];
     };
 });
+
+function requireUncached(module) {
+    delete require.cache[require.resolve(module)];
+    return require(module);
+}
