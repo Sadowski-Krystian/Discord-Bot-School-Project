@@ -9,7 +9,7 @@ global.client = new Client({
     ],
     disableMentions: 'everyone',
 });
-global.conservation = true
+global.conservation = false
 global.guildPrefixes = {}
 global.guildWishChannels = {}
 client.config = require('./config');
