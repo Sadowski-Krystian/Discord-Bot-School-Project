@@ -5,8 +5,8 @@ const mongo = require("../../src/mongo");
 module.exports = {
     name: 'clear',
     aliases: [],
-    utilisation: '{prefix}ping',
-    usage: '*I cleaned this chat room for you.*',
+    utilisation: '`prefix` clear',
+    usage: 'Usuwa podaną ilośc wiadomości z czatu',
     requiredPermission: ['ADMINISTRATOR', 'MANAGE_MESSAGES'],
     cooldown: 10,
     minArgs: 1,
@@ -17,7 +17,7 @@ module.exports = {
         let amount = parseInt(args[0])
 
         if(isNaN(amount)){
-            channel.send("*You need give me a number of messages you want delate.*")
+            channel.send("Musisz podać cyfre wiadomości do usunięcia")
             return
         }
         
@@ -33,7 +33,7 @@ module.exports = {
                         channel.bulkDelete(amount)
                         amount = amount-100
                         console.log(amount);
-                        channel.send("*I clear chat for you.*")
+                        channel.send("Czat został wyczyszczony")
                     }
                 }
                 

@@ -3,10 +3,10 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 module.exports = {
     name: 'reload',
     aliases: [],
-    utilisation: '{prefix}reload',
+    utilisation: '`prefix` reload',
     usage: 'Przeładowuje komendy bez potrzeby wyłączenia bota.',
     requiredPermission: ['ADMINISTRATOR'],
-    cooldown: 10,
+    cooldown: 30,
     minArgs: 0,
 
     execute: async (client, message, args) => {

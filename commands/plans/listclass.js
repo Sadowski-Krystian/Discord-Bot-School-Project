@@ -6,8 +6,8 @@ const mongo = require("../../src/mongo");
 module.exports = {
     name: 'sale',
     aliases: [],
-    utilisation: '{prefix}plan `klasa`',
-    usage: 'zwraca listę wszystkich klas',//shows
+    utilisation: '`prefix` sale',
+    usage: 'zwraca listę wszystkich sal w zse',//shows
     requiredPermission: false,
     cooldown: 5,
     minArgs: 0,

@@ -6,8 +6,8 @@ const { htmltoimg } = require('./../../functions/svt-to-img.js');
 module.exports = {
     name: 'nauczyciel',
     aliases: [],
-    utilisation: '{prefix}plan `klasa`',
-    usage: 'Zwraca Plan lekcji danej klasy',//shows
+    utilisation: '`prefix` nauczyciel `nauczyciel`',
+    usage: 'Zwraca Plan lekcji danego nauczyciela. Nazwa nauczyciela musi być zgodna z listą pod komendą `nauczyciele` ze względów RODO',//shows
     requiredPermission: false,
     cooldown: 30,
     minArgs: 1,
@@ -29,10 +29,10 @@ module.exports = {
         })
         if(cos){
             htmltoimg(cos['plan']).then((img)=>{
-                message.channel.send({content: `To jest plan klasy ${args[0].toLocaleLowerCase()}\n⁣`, files: [{ attachment: img }]})
+                message.channel.send({content: `To jest plan nauczyciela ${args[0].toLocaleLowerCase()}\n⁣`, files: [{ attachment: img }]})
             })
         }else{
-            message.channel.send('Nie znaleziono takiej klasy')
+            message.channel.send('Nie znaleziono takiego nauczyciela. sprawdź `nauczyciele`')
         }
         // console.log(cos);
     },

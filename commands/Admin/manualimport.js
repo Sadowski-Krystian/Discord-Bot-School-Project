@@ -3,7 +3,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 module.exports = {
     name: 'import',
     aliases: [],
-    utilisation: '{prefix}import',
+    utilisation: '`prefix` import',
     usage: 'Manualnie wywołuje import i zapis danych do pazy danych. \n\r !!!UWAGA!!! nie będzie możlowe kożystanie z komend podczas importu.',
     requiredPermission: ['ADMINISTRATOR'],
     cooldown: 10,
@@ -15,9 +15,9 @@ module.exports = {
         
         // console.log(message);
         yes.setLabel('✅');
-        yes.setStyle('SUCCESS')
+        yes.setStyle('PRIMARY')
         yes.setCustomId('yes');
-        no.setStyle('DANGER')
+        no.setStyle('PRIMARY')
         no.setLabel('❌');
         no.setCustomId('no');
 

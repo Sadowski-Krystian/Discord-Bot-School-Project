@@ -10,7 +10,7 @@ const { htmltoimg } = require('./../../functions/svt-to-img.js');
 module.exports = {
     name: 'wolny',
     aliases: [],
-    utilisation: '{prefx} gabinet <dzień:optional> <godzina:optional>',
+    utilisation: '`prefx` gabinet `godzina:optional` `dzień:optional`',
     usage: 'Zwraca listę wolnych gabinetów aktualnie lub o podanej godzinie',//shows
     requiredPermission: false,
     cooldown: 20,
@@ -107,8 +107,15 @@ module.exports = {
 
 
         } else {
+            
             method = 'time'
             time = args[0].match(/\d/g);
+            if(time == null){
+                const embedtime = new MessageEmbed();
+                embedtime.setTitle('Nieprawidłowy format. `help wolny` po więcej informacji.')
+                embedtime.setColor('RED');
+                return message.channel.send({ embeds: [embedtime]})
+            }
             time = time.join("");
             time = parseInt(time)
             // console.log(typeof(time));

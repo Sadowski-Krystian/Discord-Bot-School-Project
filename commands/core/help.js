@@ -4,7 +4,7 @@ module.exports = {
     name: 'help',
     aliases: ['h'],
     showHelp: false,
-    utilisation: '{prefix}help',
+    utilisation: '`prefix` help',
     requiredPermission: false,
     minArgs: 0,
 
@@ -17,20 +17,21 @@ module.exports = {
             const command = commands.filter(x=>x.name == args[0] || x.aliases.includes(args[0]))
             console.log(command.size);
             if(command.size>0){
+                let usage = command.map(x=>x.utilisation)
                 let description = command.map(x=>x.usage)
-                embed.setDescription(description[0]);
+                embed.setDescription('**Użycie: **'+usage[0]+"\n\n**Opis: **"+description[0]);
             }else{
-                embed.setDescription("*Sorry, but I can't do that.*");
+                embed.setDescription("Nie ma takiej komendy");
             }
             
         }else{
             
-            const messages = ['Hi, What can I do for you?', 'Hi, What can I help you?', 'Hi, What are you want?']
+            const messages = ['Witam w czym mogę ci dzis pomóc?', 'Czego dzisiaj potrzebujesz?', 'Cześć, w czym mogę ci pomóc?']
             
             
             
     
-            embed.setDescription('*'+messages[Math.floor(Math.random() * 3)]+'\nPlease ask me `'+guildPrefixes[message.guild.id]+'help` `[command]` for more details.*');
+            embed.setDescription('*'+messages[Math.floor(Math.random() * 3)]+'\nWpisz `'+guildPrefixes[message.guild.id]+'help` `[command]` po więcej informacji');
             embed.addField(`Enabled - ${commands.size}`, commands.map(x => `\`${x.name}${x.aliases[0] ? ` (${x.aliases.map(y => y).join(', ')})\`` : '\`'}`).join(' | '));
     
             //embed.setTimestamp();
@@ -38,6 +39,10 @@ module.exports = {
     
             
         }
+        let data = new Date
+        data = data.getFullYear().toString()
+        // console.log(data);
+        embed.setFooter('Copyright © '+data+' Sadowski Krystian (Ewa Kuacja®) - wszelkie prawa zastrzerzone');
         message.channel.send({ embeds: [embed] });
     },
 };

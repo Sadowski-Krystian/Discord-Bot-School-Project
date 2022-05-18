@@ -5,7 +5,7 @@ const { htmltoimg } = require('./../../functions/svt-to-img.js');
 module.exports = {
     name: 'plan',
     aliases: [],
-    utilisation: '{prefix}plan `klasa`',
+    utilisation: '`prefix` plan `klasa`',
     usage: 'Zwraca Plan lekcji danej klasy',//shows
     requiredPermission: false,
     cooldown: 30,
