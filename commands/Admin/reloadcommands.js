@@ -15,10 +15,14 @@ module.exports = {
         embed.setTitle('Komendy zostały załadowane ponownie')
         embed.setColor('GREEN');
         // conservation = true
-        // client.commands.clear()
-        // console.log(client.commands);
+        client.commands.clear()
+        console.log(client.commands);
+        // console.log();
         // delete require.cache[require.resolve(`../../src/loader.js`)];
         // require('../../src/loader.js')
+        client.loader.loader();
+        console.log(client.commands);
+        // console.log("reload commands");
         // console.log(client.commands);
         // conservation = false
         // console.log(content);

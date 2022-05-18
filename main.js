@@ -16,8 +16,11 @@ global.guildWishChannels = {}
 client.config = require('./config');
 global.mongo = require('./src/mongo.js')
 client.fun = require("./src/functions.js")
-require('./src/loader.js');
-const loadPrefixes = require('./events/ready.js')
+client.loader = require('./src/loader.js');
+client.loader.loader();
+client.loader.loadevents();
+const loadPrefixes = require('./events/ready.js');
+const { loader } = require('./src/loader.js');
 loadPrefixes.loadPrefixes(client)
 // client.fun.myConservation()
 client.login(client.config.app.token);
