@@ -7,6 +7,7 @@ Zmienne środowiskowe
 Przed uruchomieniem bota należy podać 2 zmienne środowiskowe
 
 TOKEN - Token logowania bota discord 
+
 MONGO_TOKEN - link logowania się do bazy danych
 
 .. note::
@@ -27,6 +28,14 @@ Instalacja modułów
 
 Przed wystartowaniem bota należy zainstalować wszystkie moduły podaje w package.json
 
+Można automatycznie zainstalować brakujące moduły podaną komendą
+
 .. code-block:: console
 
-    npm i
+    npm ci
+
+Lub zainstalować każdy z osobna poprzez komendę
+
+.. code-block:: console
+
+    npm i <nazwa_modułu>

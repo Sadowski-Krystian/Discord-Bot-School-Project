@@ -13,7 +13,7 @@ Bot potrafi wywołać plan lekcji nauczyciela jak i ucznia oraz wyświetlić lis
 
 .. note::
 
-  Bot kożysta z darmowego hostingu bazy danych dlatego mogą być opóźnienia w otrzymywaniu informacji
+  Bot korzysta z darmowego hostingu bazy danych dlatego mogą być opóźnienia w otrzymywaniu informacji
 
 Contents
 --------

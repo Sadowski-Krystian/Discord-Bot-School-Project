@@ -5,7 +5,7 @@ module.exports = {
     aliases: [],
     utilisation: '`prefix` import',
     usage: 'Manualnie wywołuje import i zapis danych do pazy danych. \n\r !!!UWAGA!!! nie będzie możlowe kożystanie z komend podczas importu.',
-    requiredPermission: ['ADMINISTRATOR', '459333178163724288'],
+    requiredPermission: ['459333178163724288'],
     cooldown: 10,
     minArgs: 0,
 

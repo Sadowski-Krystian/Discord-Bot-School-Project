@@ -1,6 +1,71 @@
 Komendy
 =========
 
+Komendy administracyjne
+-----------------------
+
+Import
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Opis: Manualnie wywołuje import i zapis danych do pazy danych.
+
+
+.. code-block:: console
+
+    Użycie: <prefix>import
+
+.. warning::
+    Nie będzie możlowe kożystanie z komend podczas importu.
+
+.. note::
+    Wymagany pozwolenie/dostęp właściciela
+
+
+Reload
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Opis: Przeładowuje bota bez potrzeby jego restartowania
+
+
+.. code-block:: console
+
+    Użycie: <prefix>reload
+
+.. note::
+    Wymagany pozwolenie/dostęp właściciela
+
+Clear
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Opis: Czyści podaną ilośc wiadomości
+
+
+.. code-block:: console
+
+    Użycie: <prefix>clear <numer_wiadomości>
+
+.. note::
+    Wymagane uprawnienia MANAGE_MESSAGES lub ADMINISTRATOR
+
+Prefix
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Opis: Ustawia prefix bota na serwerze
+
+.. note::
+    Bot będzie mógł odpowiadać przez dwa prefix, serwerowy oraz ogólny
+
+.. code-block:: console
+
+    Użycie: <prefix>Prefix <nowy_prefix>
+
+.. note::
+    Wymagane uprawnienia MANAGE_MESSAGES lub ADMINISTRATOR
+
+
+Komendy ogólne
+------------------
+
 Plan
 ---------------
 
