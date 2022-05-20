@@ -17,6 +17,7 @@ client.config = require('./config');
 global.mongo = require('./src/mongo.js')
 client.fun = require("./src/functions.js")
 client.loader = require('./src/loader.js');
+require('./src/cronJobs.js')
 client.loader.loader();
 client.loader.loadevents();
 const loadPrefixes = require('./events/ready.js');

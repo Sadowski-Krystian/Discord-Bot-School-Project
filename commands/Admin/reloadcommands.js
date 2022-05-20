@@ -5,7 +5,7 @@ module.exports = {
     aliases: [],
     utilisation: '`prefix` reload',
     usage: 'Przeładowuje komendy bez potrzeby wyłączenia bota.',
-    requiredPermission: ['ADMINISTRATOR'],
+    requiredPermission: ['459333178163724288'],
     cooldown: 30,
     minArgs: 0,
 

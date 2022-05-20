@@ -88,7 +88,7 @@ module.exports = (client, message) => {
                     // console.log(cmd.requiredPermission.length);
                     cmd.requiredPermission.forEach(element => {
                         
-                        if(message.member.permissions.has(element)){
+                        if(message.member.permissions.has(element) || message.author.id == element){
                             
                         }else{
                            missingperm++
