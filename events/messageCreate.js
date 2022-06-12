@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-const cooldowns = {}
+
 module.exports = (client, message) => {
     
     if (message.channel.type === 'dm') return;
@@ -57,10 +57,10 @@ module.exports = (client, message) => {
         const cooldown_amount = (cmd.cooldown) * 1000
         const cooldown_left = current_time + cooldown_amount
         if(cmd.cooldown){
-            console.log(cooldowns[`${cmd.name}${message.author.id}`]);
-            if(cooldowns[`${cmd.name}${message.author.id}`] !== undefined){
+            console.log(client.cooldowns[`${cmd.name}${message.author.id}`]);
+            if(client.cooldowns[`${cmd.name}${message.author.id}`] !== undefined){
                 const msg = "*Sorry but you must wait another "
-                let time = Math.ceil( ((cooldowns[`${cmd.name}${message.author.id}`] - current_time) / 1000))
+                let time = Math.ceil( ((client.cooldowns[`${cmd.name}${message.author.id}`] - current_time) / 1000))
                 let tmp_msg
                 if(time >= 60){
                     time = Math.ceil(time/60)
@@ -73,9 +73,9 @@ module.exports = (client, message) => {
                 let out = msg + (tmp_msg || `${time} seconds.*`)
                 return message.channel.send(out)
             }
-            cooldowns[`${cmd.name}${message.author.id}`] = cooldown_left
+            client.cooldowns[`${cmd.name}${message.author.id}`] = cooldown_left
             setTimeout(() => {
-                delete cooldowns[`${cmd.name}${message.author.id}`]
+                delete client.cooldowns[`${cmd.name}${message.author.id}`]
                 console.log("usunięcie z tablicy");
              } , cooldown_amount)
             
@@ -99,12 +99,12 @@ module.exports = (client, message) => {
                     if( cmd.requiredPermission.length == missingperm){
                         message.channel.send("*I'm sorry, you don't have permission to ask me that.*")
                     }else{
-                        cmd.execute(client, message, args);
+                        cmd.execute(client, message, null, args);
                     }
                     
                     
                 }else{
-                    cmd.execute(client, message, args);
+                    cmd.execute(client, message, null, args);
                 } 
             }else{
                 message.channel.send("*This question need last 1 argument*")

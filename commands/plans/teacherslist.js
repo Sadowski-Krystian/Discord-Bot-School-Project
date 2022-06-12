@@ -2,9 +2,12 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const cachedStudentsPlansSvgSchema = require('../../schemas/cached-students-plans-svg-schema.js');
 const cachedTeachersPlansSchema = require('../../schemas/cached-teachers-plans-schema.js');
 const classroomsSchema = require('../../schemas/classrooms-schema.js');
-
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const mongo = require("../../src/mongo");
 module.exports = {
+    data: new SlashCommandBuilder().
+        setName("nauczyciele")
+        .setDescription("Wyświetla listę wszystkich nauczycieli w zse"),
     name: 'nauczyciele',
     aliases: [],
     utilisation: '`prefix` nauczyciel',
@@ -13,142 +16,164 @@ module.exports = {
     cooldown: 5,
     minArgs: 0,
 
-    execute: async (client, message, args) =>{
-        message.start = 0
-        
-        const nextButton = new MessageButton();
-        const previosButton = new MessageButton();
-        const minButton = new MessageButton();
-        const maxButton = new MessageButton();
-        // console.log(message);
-        nextButton.setLabel('▶️');
-        nextButton.setStyle('SECONDARY')
-        nextButton.setCustomId('mextTeacher');
-        previosButton.setStyle('SECONDARY')
-        previosButton.setLabel('◀️');
-        previosButton.setCustomId('previosTeacher');
-        minButton.setStyle('SECONDARY')
-        minButton.setLabel('⏮️');
-        minButton.setCustomId('minTeacher');
-        maxButton.setStyle('SECONDARY')
-        maxButton.setLabel('⏭️');
-        maxButton.setCustomId('maxTeacher');
-        const row = new MessageActionRow().addComponents(minButton,previosButton, nextButton,maxButton);
-        const filter = (interaction) =>{
-            if(interaction.user.id == message.author.id){
-                return true
-            }
-        }
-        
-                     
-        let saletable = []
-        await mongo().then(async mongoose =>{
-            try{
-                
-                const result = await cachedTeachersPlansSchema.find()
-                for(let i = 0; i<result.length; i++){
-                    
-                    saletable.push(result[i])
-                    
-                }
-                
-                
-            }finally{
-                mongoose.connection.close()
-            }
-        })
-        if(saletable.length>10){
-            message.end = 10
-        }else{
-            message.end = saletable.length
-        }
-        const embed = new MessageEmbed();
-        embed.setTitle('Lista wszystkich nauczycieli w ZSE (RODO)')
-        embed.setColor('#E67E22');
+    execute: async (client, message, interaction, args) => {
+        let cmd = {
+            start: 0,
+            end: 0,
+            content: null,
+            msg: null,
+            authorID: null,
+            reply: message || interaction,
+            embed: new MessageEmbed(),
+            nextButton: new MessageButton().setLabel('▶️').setStyle('SECONDARY').setCustomId('mextTeacher'),
+            previosButton: new MessageButton().setLabel('◀️').setStyle('SECONDARY').setCustomId('previosTeacher'),
+            minButton: new MessageButton().setLabel('⏮️').setStyle('SECONDARY').setCustomId('minTeacher'),
+            maxButton: new MessageButton().setLabel('⏭️').setStyle('SECONDARY').setCustomId('maxTeacher'),
+            saletable: [],
+            row: new MessageActionRow(),
 
-        let content = module.exports.getdata(message.start, message.end, saletable)
-        // console.log(content);
-        embed.setDescription(content);
-        embed.setFooter({ text: `Showing ${message.end} of ${saletable.length}` });
-        let msg = await message.channel.send({ embeds: [embed], components: [row] })
-        const collector = await msg.createMessageComponentCollector({
-            filter,
-            time: 10000
-        });
-        collector.on('collect', async interaction => {
-            const embedrepley = new MessageEmbed();
-            embedrepley.setTitle('Lista wszystkich nauczycieli w ZSE (RODO)')
-            embedrepley.setColor('#E67E22');
-    
-            
-            
-            await interaction.deferUpdate();
-            switch (interaction.customId) {
-                case 'mextTeacher': {
-                    message.start = message.start + 10
-                    message.end = message.end + 10
-                            if(message.end>saletable.length){
-                                message.end = saletable.length
-                                message.start  = saletable.length - 10
-                                if(message.start<0){
-                                    message.start = 0
-                                }
-                                
-                            }
-                    break;
-                }
-                case 'previosTeacher': {
-                    message.start = message.start - 10
-                    message.end = message.end - 10
-                    if (message.start < 0) {
-                        message.start = 0
-                        message.end = 10
-                        if(message.end>saletable.length){
-                            message.end = saletable.length
+            getMongoData: async () => {
+                await mongo().then(async mongoose => {
+                    try {
+
+                        const result = await cachedTeachersPlansSchema.find()
+                        for (let i = 0; i < result.length; i++) {
+
+                            cmd.saletable.push(result[i])
+
                         }
-                        
+
+
+                    } finally {
+                        mongoose.connection.close()
                     }
-                    break;
+                })
+            },
+            embedGenerator: () => {
+                cmd.embed.setTitle('Lista wszystkich nauczycieli w ZSE (RODO)')
+                cmd.embed.setColor('#E67E22');
+                cmd.embed.setDescription(cmd.content);
+                cmd.embed.setFooter({ text: `Showing ${cmd.end} of ${cmd.saletable.length}` });
+            },
+            getdata: (start, end, tablica) => {
+                let str = ''
+                // console.log(tablica[0]);
+                for (let x = start; x < end; x++) {
+                    str = str + (x + 1) + ". `" + tablica[x]._id + "`\n"
                 }
-                case 'minTeacher':{
-                    message.start = 0
-                    message.end = 10
-                    if(message.end>saletable.length){
-                        message.end = saletable.length
+                return str
+
+                // msg.edit({ embeds: [embed], components: [row] })
+            },
+            init: async () => {
+
+                cmd.row.addComponents(cmd.minButton, cmd.previosButton, cmd.nextButton, cmd.maxButton)
+                await cmd.getMongoData()
+                if (cmd.saletable.length > 10) {
+                    cmd.end = 10
+                } else {
+                    cmd.end = cmd.saletable.length
+                }
+                cmd.content = cmd.getdata(cmd.start, cmd.end, cmd.saletable)
+                // console.log(cmd.content);
+                cmd.embedGenerator()
+                if (interaction) {
+                    cmd.authorID = interaction.member.id
+                    cmd.msg = await cmd.reply.editReply({
+                        embeds: [cmd.embed], components: [cmd.row], ephemeral: true, allowedMentions: {
+                            repliedUser: false
+                        }
+                    })
+                } else {
+                    cmd.authorID = message.author.id
+                    cmd.msg = await cmd.reply.reply({
+                        embeds: [cmd.embed], components: [cmd.row], ephemeral: true, allowedMentions: {
+                            repliedUser: false
+                        }
+                    })
+                }
+                let filter = (int) => {
+                    if (int.user.id == cmd.authorID) {
+                        return true
                     }
-                    break;
                 }
-                case 'maxTeacher':{
-                    message.end = saletable.length
-                    message.start  = saletable.length - 10
-                    if(message.start<0){
-                        message.start = 0
+                let collector = await cmd.msg.createMessageComponentCollector({
+                    filter,
+                    time: 10000
+                })
+                collector.on('collect', async int => {
+                    await int.deferUpdate();
+                    switch (int.customId) {
+                        case 'mextTeacher': {
+                            cmd.start = cmd.start + 10
+                            cmd.end = cmd.end + 10
+                            if (cmd.end > cmd.saletable.length) {
+                                cmd.end = cmd.saletable.length
+                                cmd.start = cmd.saletable.length - 10
+                                if (cmd.start < 0) {
+                                    cmd.start = 0
+                                }
+
+                            }
+                            break;
+                        }
+                        case 'previosTeacher': {
+                            cmd.start = cmd.start - 10
+                            cmd.end = cmd.end - 10
+                            if (cmd.start < 0) {
+                                cmd.start = 0
+                                cmd.end = 10
+                                if (cmd.end > cmd.saletable.length) {
+                                    cmd.end = cmd.saletable.length
+                                }
+
+                            }
+                            break;
+                        }
+                        case 'minTeacher': {
+                            cmd.start = 0
+                            cmd.end = 10
+                            if (cmd.end > cmd.saletable.length) {
+                                cmd.end = cmd.saletable.length
+                            }
+                            break;
+                        }
+                        case 'maxTeacher': {
+                            cmd.end = cmd.saletable.length
+                            cmd.start = cmd.saletable.length - 10
+                            if (cmd.start < 0) {
+                                cmd.start = 0
+                            }
+                            break;
+                        }
                     }
-                    break;
-                }
+                    cmd.content = await cmd.getdata(cmd.start, cmd.end, cmd.saletable)
+                    // console.log(content);
+                    await cmd.embedGenerator()
+                    await int.editReply({ embeds: [cmd.embed], components: [cmd.row] });
+                    collector.resetTimer()
+
+                })
+                collector.on('end', collected => {
+                    console.log(`Collected ${collected.size} clicks`)
+                })
+
             }
-            let contentreplay = module.exports.getdata(message.start, message.end, saletable)
-            // console.log(content);
-            embedrepley.setDescription(contentreplay);
-            embedrepley.setFooter({ text: `Showing ${message.end} of ${saletable.length}` });
-            await interaction.editReply({ embeds: [embedrepley], components: [row] });
-            collector.resetTimer()
-            
-          })
-          collector.on('end', collected => {
-            console.log(`Collected ${collected.size} clicks`)
-          })
-        
+        }
+
+        if (interaction) {
+            await interaction.deferReply({ ephemeral: true });
+        }
+        cmd.init()
+
+
+
+
+
+
+      
+
     },
 
-    getdata: (start, end, tablica) => {
-        let str = ''
-        // console.log(tablica[0]);
-        for (let x = start; x < end; x++) {
-            str = str + (x + 1) + ". `" + tablica[x]._id + "`\n"
-        }
-        return str
 
-        // msg.edit({ embeds: [embed], components: [row] })
-    }
 };

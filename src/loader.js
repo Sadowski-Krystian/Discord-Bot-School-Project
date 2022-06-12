@@ -16,6 +16,13 @@ module.exports ={
             for (const file of commands) {
                 const command = module.exports.requireUncached(`../commands/${dirs}/${file}`);
                 // console.log(command);
+                if(command.data != false){
+
+                    client.slashCommands.push(command.data.toJSON())
+
+                
+            }
+            if(command.showHelp != false) client.helpChoise.push({name: command.name.toLowerCase(), value: command.name.toLowerCase()})
                 console.log(`-> Loaded command ${command.name.toLowerCase()}`);
                 client.commands.set(command.name.toLowerCase(), command);
                 // delete require.cache[require.resolve(`../commands/${dirs}/${file}`)];

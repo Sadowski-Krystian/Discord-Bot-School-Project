@@ -1,15 +1,17 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
+    data: false,
     name: 'reload',
     aliases: [],
+    showHelp: false,
     utilisation: '`prefix` reload',
     usage: 'Przeładowuje komendy bez potrzeby wyłączenia bota.',
     requiredPermission: ['459333178163724288'],
     cooldown: 30,
     minArgs: 0,
 
-    execute: async (client, message, args) => {
+    execute: async (client, message, interaction, args) => {
         
         const embed = new MessageEmbed();
         embed.setTitle('Komendy zostały załadowane ponownie')
