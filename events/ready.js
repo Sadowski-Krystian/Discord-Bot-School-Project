@@ -11,6 +11,7 @@ module.exports = async (client) => {
    await module.exports.loadTeachers(client)
    const CLIENT_ID = client.user.id;
    const guild_id = "812303051377213463"
+   console.log("registering in rest");
    const rest = new REST({ version: '9' }).setToken(client.config.app.token);
  (async () => {
      
