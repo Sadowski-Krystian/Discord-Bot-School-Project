@@ -1,6 +1,8 @@
 Komendy
 =========
 
+<prefix> - znak wywoławczy bota ustawiony na serwerze (domyślny - 'b')
+
 Komendy administracyjne
 -----------------------
 
