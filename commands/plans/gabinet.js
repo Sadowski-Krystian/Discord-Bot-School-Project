@@ -182,10 +182,16 @@ module.exports = {
                     if(cmd.time == null){
                         cmd.embed.setTitle('Nieprawidłowy format. `help wolny` po więcej informacji.')
                         cmd.embed.setColor('RED');
-
-                        return cmd.reply.editReply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
-                            repliedUser: false
-                        }})
+                        if(interaction){
+                            return cmd.reply.editReply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
+                                repliedUser: false
+                            }})
+                        }else{
+                            return cmd.reply.reply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
+                                repliedUser: false
+                            }})
+                        }
+                        
                     }
                     cmd.time = cmd.time.join("");
                     cmd.time = parseInt(cmd.time)
