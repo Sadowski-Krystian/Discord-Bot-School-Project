@@ -1,7 +1,7 @@
 Komendy
 =========
 
-<prefix> - znak lub ciąg znaków ustawiony do wywołania bota na serwerze (domyślny - 'b' - zawsze aktywny)
+<prefix> - znak lub ciąg znaków ustawiony do wywołania bota na serwerze ( domyślny - 'b' - zawsze aktywny )
 
 Komendy administracyjne
 -----------------------
