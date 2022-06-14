@@ -58,10 +58,12 @@ module.exports = {
             reply: message || interaction,
             days: ["10000", "01000", "00100", "00010", "00001"],
             messageCommand: async ()=>{
-                await cmd.embedGenerator()
-                cmd.reply.reply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
-                    repliedUser: false
-                }})
+                // await cmd.embedGenerator()
+                // cmd.embed.setDescription("Czekam na wyniki")
+                // cmd.reply.reply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
+                //     repliedUser: false
+                // }})
+                
                 cmd.date = new Date(message.createdTimestamp);args[0]
                 if (args[1] != undefined) {
                     cmd.day = args[1].toLowerCase()
@@ -71,10 +73,11 @@ module.exports = {
             },
             interactionCommand: async ()=>{
                 await cmd.embedGenerator()
+                console.log(cmd.reply);
                 cmd.reply.deferReply({ephemeral: true})
                 cmd.date = new Date(interaction.createdTimestamp);
                 cmd.args_time = interaction.options.getString('godzina')
-                cmd.day = interaction.options.getString('dzień').toLocaleLowerCase()
+                cmd.day = interaction.options.getString('dzień')
                 cmd.init()
             },
             embedGenerator: ()=>{
@@ -85,11 +88,8 @@ module.exports = {
                     cmd.embed.setDescription(cmd.content);
                     cmd.embed.setFooter({ text: `Showing ${cmd.end} of ${cmd.classrooms.length}` });
                 }else{
-                    if(!cmd.lessonstime && cmd.end != 0){
-                        cmd.embed.setDescription("Aktualnie nie odbywa się żadna lekcja")
-                    }else{
-                        cmd.embed.setDescription("Przeszukuję baze...")
-                    }
+                
+                    cmd.embed.setDescription("Możliwe że wystapił błąd")
                     
                 }
                 
@@ -147,7 +147,7 @@ module.exports = {
         
         
                     default:
-                        console.log(cmd.date);
+                        // console.log(cmd.date);
                         if (cmd.date.getDay() > 5) {
                             cmd.reply.editReply({ content: "Przepraszam ale dzisiaj jest weekend", ephemeral: true, allowedMentions: {
                                 repliedUser: false
@@ -182,6 +182,7 @@ module.exports = {
                     if(cmd.time == null){
                         cmd.embed.setTitle('Nieprawidłowy format. `help wolny` po więcej informacji.')
                         cmd.embed.setColor('RED');
+
                         return cmd.reply.editReply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
                             repliedUser: false
                         }})
@@ -214,7 +215,8 @@ module.exports = {
                 } else {
                     cmd.authorID = message.author.id
                     // console.log(cmd.reply);
-                    cmd.msg = await cmd.reply.editReply({
+                    // let tmp = cmd.reply
+                    cmd.msg = await cmd.reply.reply({
                         embeds: [cmd.embed], components: [cmd.row], ephemeral: true, allowedMentions: {
                             repliedUser: false
                         }
@@ -328,10 +330,9 @@ module.exports = {
                     
                     
                 }
-                // console.log(cmd.lessonstime);
                 if(!cmd.lessonstime){
                     await cmd.embedGenerator()
-
+                    cmd.embed.setDescription("Możliwe że nie odbywa się teraz żadna lekcja")
                     return cmd.reply.editReply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
                         repliedUser: false
                     }})

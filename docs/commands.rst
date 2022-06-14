@@ -21,6 +21,7 @@ Opis: Manualnie wywołuje import i zapis danych do pazy danych.
     Wymagany pozwolenie/dostęp właściciela
 
 
+
 Reload
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -64,17 +65,17 @@ Opis: Ustawia prefix bota na serwerze
 
 
 Komendy ogólne
-------------------
+-----------------------
 
 Plan
----------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Przyjmuję 1 argument
 
 Wyświetla plan dla podanej klasy
 
 Nauczyciel
------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Przyjmuje 1 argument
 
@@ -82,14 +83,14 @@ Wyświetla plan dla pdanego nauczyciela
 
 
 sale
------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Nie przyjmuje argumentów
 
 Wyświetla spis wszystkich mozliwych gabinetów do zajęć
 
 nauczyciele
-------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Nie przyjmuje argumentów
 
