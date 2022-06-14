@@ -1,7 +1,9 @@
 # Discord Bot School Project
 
+[![Build](https://img.shields.io/readthedocs/discord-bot-school-project)](https://discord-bot-school-project.readthedocs.io/en/latest/?badge=latest)
+[![npm version](https://img.shields.io/npm/v/discord.js?label=Discord.js)](https://discord.js.org/#/)
 ## Instalacja
-[![Node version](https://img.shields.io/node/v/[NPM-MODULE-NAME].svg?style=flat)](http://nodejs.org/download/)
+
 Bot wymaga [Node.js](https://nodejs.org/) (rekomendowana jest wersja 16+)
 
 Należy zainstalować wszystkie moduły poprzez jedną z następujących komend
