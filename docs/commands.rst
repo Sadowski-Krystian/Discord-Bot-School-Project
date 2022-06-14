@@ -64,17 +64,17 @@ Opis: Ustawia prefix bota na serwerze
 
 
 Komendy ogólne
-------------------
+-----------------------
 
 Plan
----------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Przyjmuję 1 argument
 
 Wyświetla plan dla podanej klasy
 
 Nauczyciel
------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Przyjmuje 1 argument
 
@@ -82,14 +82,14 @@ Wyświetla plan dla pdanego nauczyciela
 
 
 sale
------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Nie przyjmuje argumentów
 
 Wyświetla spis wszystkich mozliwych gabinetów do zajęć
 
 nauczyciele
-------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Nie przyjmuje argumentów
 
