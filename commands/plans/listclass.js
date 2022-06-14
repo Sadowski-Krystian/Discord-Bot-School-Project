@@ -18,6 +18,7 @@ module.exports = {
 
     execute: async (client, message, interaction, args) => {
 
+        
         let cmd = {
             start: 0,
             end: 0,

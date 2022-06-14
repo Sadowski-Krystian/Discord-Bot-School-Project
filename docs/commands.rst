@@ -21,6 +21,7 @@ Opis: Manualnie wywołuje import i zapis danych do pazy danych.
     Wymagany pozwolenie/dostęp właściciela
 
 
+
 Reload
 ~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -63,6 +63,7 @@ module.exports = {
                 // cmd.reply.reply({ embeds: [cmd.embed], ephemeral: true, allowedMentions: {
                 //     repliedUser: false
                 // }})
+                
                 cmd.date = new Date(message.createdTimestamp);args[0]
                 if (args[1] != undefined) {
                     cmd.day = args[1].toLowerCase()
