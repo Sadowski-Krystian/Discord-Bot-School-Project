@@ -58,7 +58,7 @@ module.exports = {
                     break;
             
             }
-            await interaction.channel.send({ embeds: [embedReply]})
+            await msg.edit({ embeds: [embedReply], components: []})
 
         })
         collector.on('end', collected => {
