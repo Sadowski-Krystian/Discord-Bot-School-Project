@@ -1,5 +1,4 @@
-const { MessageAttachment } = require('discord.js');
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { MessageAttachment, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const cachedStudentsPlansSvgSchema = require('../../schemas/cached-students-plans-svg-schema.js');
 const cardsSchema = require('../../schemas/cards-schema.js');
 const classroomsSchema = require('../../schemas/classrooms-schema.js');
@@ -7,7 +6,7 @@ const lessonsSchema = require('../../schemas/lessons-schema.js');
 const periodsSchema = require('../../schemas/periods-schema.js');
 const mongo = require("../../src/mongo");
 const { htmltoimg } = require('../../functions/svt-to-img.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, ActionRowBuilder } = require('@discordjs/builders');
 module.exports = {
     data: new SlashCommandBuilder().
         setName("wolny")
@@ -41,10 +40,10 @@ module.exports = {
             start: 0,
             end: 0,
             authorID: null,
-            nextButton: new MessageButton().setLabel('▶️').setStyle('SECONDARY').setCustomId('mextClassroom'),
-            previosButton: new MessageButton().setLabel('◀️').setStyle('SECONDARY').setCustomId('previosClassroom'),
-            minButton: new MessageButton().setLabel('⏮️').setStyle('SECONDARY').setCustomId('minClassroom'),
-            maxButton: new MessageButton().setLabel('⏭️').setStyle('SECONDARY').setCustomId('maxClassroom'),
+            nextButton: new ButtonBuilder().setLabel('▶️').setStyle(ButtonStyle.Secondary).setCustomId('mextClassroom'),
+            previosButton: new ButtonBuilder().setLabel('◀️').setStyle(ButtonStyle.Secondary).setCustomId('previosClassroom'),
+            minButton: new ButtonBuilder().setLabel('⏮️').setStyle(ButtonStyle.Secondary).setCustomId('minClassroom'),
+            maxButton: new ButtonBuilder().setLabel('⏭️').setStyle(ButtonStyle.Secondary).setCustomId('maxClassroom'),
             row: null,
             time: null,
             args_time: null,
@@ -54,7 +53,7 @@ module.exports = {
             cards: null,
             classrooms: null,
             day: null,
-            embed: new MessageEmbed(),
+            embed: new EmbedBuilder(),
             reply: message || interaction,
             days: ["10000", "01000", "00100", "00010", "00001"],
             messageCommand: async ()=>{
@@ -81,7 +80,7 @@ module.exports = {
                 cmd.init()
             },
             embedGenerator: ()=>{
-                cmd.row = new MessageActionRow().addComponents(cmd.minButton,cmd.previosButton, cmd.nextButton,cmd.maxButton)
+                cmd.row = new ActionRowBuilder().addComponents(cmd.minButton,cmd.previosButton, cmd.nextButton,cmd.maxButton)
                 cmd.embed.setTitle('Lista wolnych gabinetów na podaną godzinę')
                 cmd.embed.setColor('#E67E22');
                 if(cmd.content){

@@ -1,4 +1,6 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder } = require('@discordjs/builders');
+const { ButtonStyle } = require('discord-api-types/v10');
+const { MessageEmbed, MessageButton, MessageActionRow, ActionRowBuilder } = require('discord.js');
 
 module.exports = {
     data: false,
@@ -12,24 +14,23 @@ module.exports = {
     minArgs: 0,
 
     execute: async (client, message, interaction, args) => {
-        const yes = new MessageButton();
-        const no = new MessageButton();
+        const yes = new ButtonBuilder();
+        const no = new ButtonBuilder();
         
         // console.log(message);
         yes.setLabel('✅');
-        yes.setStyle('PRIMARY')
+        yes.setStyle(ButtonStyle.Primary)
         yes.setCustomId('yes');
-        no.setStyle('PRIMARY')
+        no.setStyle(ButtonStyle.Primary)
         no.setLabel('❌');
         no.setCustomId('no');
 
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
         embed.setTitle('OSTRZERZENIE')
-        embed.setColor('ORANGE');
 
         // console.log(content);
         embed.setDescription('Aktywacja importu spowoduje tymczasowe wyłączenie wszystkich komend na czas trwania importu. Może to potrwać do kilku minut\n\nCzy chcesz kontynuować?');
-        const row = new MessageActionRow().addComponents(yes,no);
+        const row = new ActionRowBuilder().addComponents(yes,no);
         let msg = await message.channel.send({ embeds: [embed], components: [row] })
 
         const filter = (interaction) => {
@@ -43,18 +44,16 @@ module.exports = {
         });
         collector.on('collect', async interaction => {
             await interaction.deferUpdate();
-            const embedReply = new MessageEmbed();
+            const embedReply = new EmbedBuilder();
             
             switch (interaction.customId) {
                 case 'yes':
                     embedReply.setTitle('Rozpoczęto import.')
-                    embedReply.setColor('GREEN');
                     client.fun.myConservation()
                     break;
 
                 case 'no':
                     embedReply.setTitle('Przerwano import.')
-                    embedReply.setColor('RED');
                     break;
             
             }

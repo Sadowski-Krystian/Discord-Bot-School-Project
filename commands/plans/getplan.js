@@ -28,6 +28,9 @@ module.exports = {
                 
                 await cmd.getData()
                 if(cmd.result){
+                    if(interaction){
+                        await cmd.reply.deferReply()
+                    }
                     htmltoimg(cmd.result['plan']).then((img)=>{
                         if(interaction){
                             cmd.reply.editReply({content: `To jest plan klasy ${cmd.class}\n⁣`,
@@ -48,6 +51,9 @@ module.exports = {
                     })
                     
                 }else{
+                    if(interaction){
+                        await cmd.reply.deferReply()
+                    }
                     if(interaction){
                         cmd.reply.editReply({content: 'Nie znaleziono takiej klasy',
                         ephemeral: true,

@@ -1,11 +1,12 @@
-const { Client, Intents, Collection } = require('discord.js');
+const { Client, Intents, Collection, GatewayIntentBits } = require('discord.js');
 require("dotenv").config()
 global.client = new Client({
     intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MEMBERS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_VOICE_STATES
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.MessageContent
     ],
     disableMentions: 'everyone',
 });

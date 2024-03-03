@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ module.exports = {
 
     execute: async (client, message, interaction, args) => {
         let cmd = {
-            embed: new MessageEmbed(),
+            embed: new EmbedBuilder(),
             commands: client.commands.filter(x => x.showHelp !== false),
             commandName: null,
             command: "",
@@ -44,8 +44,8 @@ module.exports = {
                 let data = new Date
                 data = data.getFullYear().toString()
                 cmd.embed.setColor('#E67E22');
-                cmd.embed.setAuthor(client.user.username, client.user.displayAvatarURL({ size: 1024, dynamic: true }));
-                cmd.embed.setFooter('Copyright © ' + data + ' Sadowski Krystian (Ewa Kuacja®) - wszelkie prawa zastrzerzone');
+                cmd.embed.setAuthor({name: client.user.username, url: client.user.displayAvatarURL({ size: 1024, dynamic: true })});
+                cmd.embed.setFooter({text:'Copyright © ' + data + ' Sadowski Krystian (Ewa Kuacja®) - wszelkie prawa zastrzerzone'});
 
                 if (cmd.commandName != null) {
                     cmd.command = cmd.commands.filter(x => x.name == cmd.commandName || x.aliases.includes(cmd.commandName))
@@ -57,7 +57,10 @@ module.exports = {
                         cmd.msg = "Nie ma takiej komendy"
                     }
                 } else {
-                    cmd.embed.addField(`Enabled - ${cmd.commands.size}`, cmd.commands.map(x => `\`${x.name}${x.aliases[0] ? ` (${x.aliases.map(y => y).join(', ')})\`` : '\`'}`).join(' | '));
+                    cmd.embed.addFields([{
+                        name: `Enabled - ${cmd.commands.size}`,
+                        value: cmd.commands.map(x => `\`${x.name}${x.aliases[0] ? ` (${x.aliases.map(y => y).join(', ')})\`` : '\`'}`).join(' | ')
+                    }])
                 }
                 cmd.embed.setDescription(cmd.msg)
                 cmd.reply.reply({ embeds: [cmd.embed], 

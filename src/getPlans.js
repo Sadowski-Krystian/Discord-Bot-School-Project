@@ -11,9 +11,10 @@ module.exports = {
           // classnr = classnr.toString()
           await mongo().then(async mongoose =>{
             try{
-          for (let index = 17; index < 79; index++) {
-            let classnr = index.toString()
-            await page.goto('https://zsel.edupage.org/timetable/view.php?num=21&class=-'+classnr, { waitUntil: 'networkidle0' });
+          for (let index = 0; index < 90; index++) {
+            try {
+              let classnr = index.toString()
+            await page.goto('https://zsel.edupage.org/timetable/view.php?num=63&class=*'+classnr, { waitUntil: 'networkidle0' });
             const data = await page.evaluate(() => document.querySelector('svg').outerHTML);
             let parser = new DOMParser();
             let doc = parser.parseFromString(data, "text/xml");
@@ -28,6 +29,9 @@ module.exports = {
                   },{
                       upsert: true
                   })
+            } catch (error) {
+              console.log(error);
+            }
                   
                 }
               }finally{
@@ -54,9 +58,10 @@ module.exports = {
           await mongo().then(async mongoose =>{
             try{
           for (let index = 0; index < 90; index++) {
-            let classnr = index.toString()
+            try {
+              let classnr = index.toString()
             // await client.fun.sleep(30000)
-            await page.goto('https://zsel.edupage.org/timetable/view.php?num=22&teacher=-'+classnr, { waitUntil: 'networkidle0' });
+            await page.goto('https://zsel.edupage.org/timetable/view.php?num=63&teacher=-'+classnr, { waitUntil: 'networkidle0' });
             const data = await page.evaluate(() => document.querySelector('svg').outerHTML);
             let parser = new DOMParser();
             let doc = parser.parseFromString(data, "text/xml");
@@ -74,6 +79,10 @@ module.exports = {
               })
               
             }
+            } catch (error) {
+              console.log(err);
+            }
+            
             
                 }
               }finally{
